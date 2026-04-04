@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %>
+    <title>Signin</title>
+
+    <style>
+        /* Full-screen background */
+        body {
+            background: url('/images/blog1.jpeg') no-repeat center center;
+            background-size: cover;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Dark overlay */
+        .overlay {
+            background: rgba(0, 0, 0, 0.7);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: white;
+        }
+
+        /* Form container */
+        .signin-form {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .signin-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #000;
+        }
+
+        .btn-primary {
+            border-radius: 20px;
+            width: 100%;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        .alert {
+            max-width: 400px;
+            margin: 10px auto;
+        }
+    </style>
+</head>
+<body>
+    <%- include('./partials/nav') %>
+
+    <% if (error) { %>
+        <div class="alert alert-danger" role="alert">
+            <%= error %>
+        </div>
+    <% } %>
+
+    <div class="overlay">
+        <div class="signin-form">
+            <h2>Signin</h2>
+            <form action="/user/signin" method="post">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Email address</label>
+                    <input type="email" name="email" class="form-control" id="exampleInputEmail1" required>
+                    
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" id="exampleInputPassword1" required>
+                </div>
+                <button type="submit" class="btn btn-primary mt-2">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <%- include('./partials/scripts') %>
+</body>
+</html>

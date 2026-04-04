@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %>
+    <title>Homepage</title>
+
+    <style>
+        body {
+           background: url('/images/blog1.jpeg') no-repeat center center/cover;
+           background-size: cover; /* screen ko cover kare */
+           min-height: 100vh;
+           margin: 0;
+           font-family: Arial, sans-serif;
+        }
+
+        /* overlay for dark effect */
+        .overlay {
+            background: rgba(0,0,0,0.6);
+            min-height: 100vh;
+            color: white;
+            padding-top: 30px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .card img {
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .badge {
+            margin-right: 5px;
+        }
+
+        .card-body {
+            background: #111;
+            color: white;
+        }
+
+        h3 {
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            border-radius: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+        }
+    </style>
+</head>
+
+<body>
+
+<%- include('./partials/nav') %>
+
+<div class="overlay">
+    <div class="container mt-4">
+
+        <!-- Greeting: Only if user is logged in -->
+        <h3>
+            Blogs 
+            <% if (user && user.fullName) { %>
+                <%= user.fullName %> 👋
+            <% } %>
+        </h3>
+
+        <div class="row mt-4">
+            <% if (blogs.length === 0) { %>
+                <p>No blogs found</p>
+            <% } %>
+
+            <% blogs.forEach(blog => { %>
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-lg">
+
+                        <!-- Blog Image -->
+                        <img src="<%= blog.coverImageURL %>" class="card-img-top">
+
+                        <div class="card-body">
+                            <h5 class="card-title"><%= blog.title %></h5>
+                            <p class="card-text">
+                                <%= blog.body.substring(0, 80) %>...
+                            </p>
+
+                            <% if (blog.tags && blog.tags.length) { %>
+                                <p>
+                                    <% blog.tags.forEach(tag => { %>
+                                        <span class="badge bg-primary"><%= tag %></span>
+                                    <% }) %>
+                                </p>
+                            <% } %>
+
+                            <!-- Buttons -->
+                           
+                            <a href="/blog/view/<%= blog._id %>" class="btn btn-light btn-sm">Read More</a>
+
+                            <!-- Edit/Delete only for owner -->
+                            <% if (user && blog.createdby == user.id) { %>
+                                <a href="/blog/edit/<%= blog._id %>" class="btn btn-warning btn-sm">Edit</a>
+                                <form action="/blog/delete/<%= blog._id %>" method="POST" style="display:inline;">
+                                    <button class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            <% } %>
+                        </div>
+
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+
+    </div>
+</div>
+
+<%- include('./partials/scripts') %>
+
+</body>
+</html>

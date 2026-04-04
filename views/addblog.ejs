@@ -1,0 +1,82 @@
+<head>
+    <%- include('./partials/head') %>
+    <title>Add New Blog</title>
+
+    <style>
+        /* Full screen background */
+        body {
+            background: url('/images/blog1.jpeg') no-repeat center center;
+            background-size: cover; /* screen cover kare */
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Dark overlay for readability */
+        .overlay {
+            background: rgba(0,0,0,0.6);
+            min-height: 100vh;
+            padding-top: 50px;
+            color: white;
+        }
+
+        /* Form styling */
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: rgba(255,255,255,0.1); /* light transparent background */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .form-control {
+            border-radius: 8px;
+            background: rgba(255,255,255,0.9);
+            color: #000;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<%- include('./partials/nav') %>
+
+<div class="overlay">
+    <div class="container mt-4">
+        <h2>Add New Blog</h2>
+        <form action="/blog/create" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="body">Body</label>
+                <textarea class="form-control" id="body" name="body" rows="5" placeholder="Enter blog content here..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="coverImage">Cover Image</label>
+                <input type="file" class="form-control" id="coverImage" name="coverImage" accept="image/*">
+            </div>
+
+            <div class="form-group">
+                <label for="tags">Tags</label>
+                <input type="text" class="form-control" id="tags" name="tags" placeholder="Enter tags separated by commas">
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Create Blog</button>
+        </form>
+    </div>
+</div>
+
+<%- include('./partials/scripts') %>
+</body>

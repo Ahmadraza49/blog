@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %>
+    <title>Signup</title>
+
+    <style>
+        /* Full-screen background */
+        body {
+            background: url('/images/blog1.jpeg') no-repeat center center;
+            background-size: cover;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Dark overlay */
+        .overlay {
+            background: rgba(0, 0, 0, 0.6);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: white;
+        }
+
+        /* Form container */
+        .signup-form {
+            background: rgba(255, 255, 255, 0.1); /* transparent */
+            padding: 30px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .signup-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #000;
+        }
+
+        .btn-primary {
+            border-radius: 20px;
+            width: 100%;
+        }
+
+        label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <%- include('./partials/nav') %>
+
+    <div class="overlay">
+        <div class="signup-form">
+            <h2>Signup</h2>
+            <form action="/user/signup" method="post">     
+                <div class="mb-3">  
+                    <label for="Fullname" class="form-label">Full name</label>
+                    <input type="text" class="form-control" id="Fullname" name="fullName" required>
+                </div>                              
+                <div class="mb-3">  
+                    <label for="exampleInputEmail1" class="form-label">Email address</label>
+                    <input type="email" name="email" class="form-control" id="exampleInputEmail1" required>
+           
+                </div>             
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" id="exampleInputPassword1" required>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <%- include('./partials/scripts') %>
+</body>
+</html>
