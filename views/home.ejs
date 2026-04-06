@@ -171,7 +171,11 @@
                         <img src="<%= blog.coverImageURL %>" class="card-img-top">
 
                         <div class="card-body">
-                            <h5 class="card-title blog-title"><%= blog.title %></h5>
+                          <h5 class="card-title blog-title"><%= blog.title %></h5>
+
+                          <p style="font-size:13px; color:#ccc;">
+                         By: <%= blog.createdby ? blog.createdby.fullName : "Unknown" %>
+                           </p>
                             <p class="card-text">
                                 <%= blog.body.substring(0, 100) %>...
                             </p>

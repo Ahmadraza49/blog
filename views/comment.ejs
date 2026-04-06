@@ -102,7 +102,7 @@ button.btn-delete:hover {
 <div class="overlay">
   <div class="container mt-4">
     <h2><%= blog.title %></h2>
-    <p>By: <%= blog.createdby?.name || "Unknown" %></p>
+    <p>By: <%= blog.createdby? blog.createdby.fullname : "Unknown" %></p>
     <img src="<%= blog.coverImageURL %>" style="max-width:100%; border-radius:10px; margin-bottom:15px;">
     <p><%= blog.body %></p>
     <% if(blog.tags && blog.tags.length > 0) { %>

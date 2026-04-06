@@ -37,7 +37,7 @@ router.post("/create", isLoggedIn, upload.single("coverImage"), async (req, res)
       title,
       body,
       tags: tags ? tags.split(",").map(t => t.trim()) : [],
-      createdby: req.user.id,
+      createdby: req.user._id,
       coverImageURL: req.file?.path || "/images/default-blog.png",
     });
 
@@ -51,7 +51,7 @@ router.post("/create", isLoggedIn, upload.single("coverImage"), async (req, res)
 // 🔹 View Single Blog
 router.get("/view/:id", async (req, res) => {
   try {
-    const blog = await Blog.findById(req.params.id).populate("createdby", "name").lean();
+    const blog = await Blog.findById(req.params.id).populate("createdby", "fullName").lean();
     if (!blog) return res.redirect("/");
 
     const Comment = require("../models/comment");
