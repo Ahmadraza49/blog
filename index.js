@@ -46,11 +46,11 @@ app.get("/", async (req, res) => {
     const Blog = require("./models/blog");
     const Comment = require("./models/comment");
 
-    const blogs = await Blog.find({}).populate("createdby", "name").lean();
+    const blogs = await Blog.find({}).populate("createdby", "fullName").lean();
 
     const blogsWithComments = await Promise.all(
       blogs.map(async (b) => {
-        const comments = await Comment.find({ blog: b._id }).populate("user", "name").lean();
+        const comments = await Comment.find({ blog: b._id }).populate("user", "fullName").lean();
         return { ...b, comments };
       })
     );
