@@ -1,0 +1,147 @@
+<%- include('./partials/head') %>
+<title><%= blog.title %></title>
+<style>
+body { 
+    background: url('/images/blog1.jpeg') no-repeat center center; 
+    background-size: cover; 
+    font-family: Arial; 
+    margin: 0; 
+    min-height: 100vh; 
+}
+
+.overlay { 
+    background: rgba(0,0,0,0.6); 
+    padding-top: 50px; 
+    min-height: 100vh; 
+    color: white; 
+}
+
+.container { 
+    max-width: 800px; 
+    margin: auto; 
+    background: rgba(255,255,255,0.1); 
+    padding: 30px; 
+    border-radius: 12px; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+.comments-section { 
+    max-width: 800px; 
+    margin: 20px auto; 
+    background: rgba(0,0,0,0.5); 
+    padding: 20px; 
+    border-radius: 12px; 
+    color: antiquewhite;
+}
+
+input[type="text"] { 
+    width: 70%; 
+    padding: 8px; 
+    border-radius: 5px; 
+    border: none;
+}
+
+button {
+    border: none;
+    border-radius: 12px;
+    padding: 8px 16px;
+    margin-left: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+}
+
+/* Comment Button - Blue Gradient */
+button.btn-comment {
+    background: linear-gradient(45deg, #1e3c72, #2a5298);
+    color: white;
+}
+
+button.btn-comment:hover {
+    transform: scale(1.1) translateY(-2px);
+    box-shadow: 0 8px 12px rgba(0,0,0,0.4);
+}
+
+button.btn-comment:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Edit Button - Orange Gradient */
+button.btn-edit, a.btn-edit {
+    background: linear-gradient(45deg, #f7971e, #ffd200);
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+button.btn-edit:hover, a.btn-edit:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 10px rgba(0,0,0,0.3);
+}
+
+/* Delete Button - Red Gradient */
+button.btn-delete {
+    background: linear-gradient(45deg, #ff416c, #ff4b2b);
+    color: white;
+}
+
+button.btn-delete:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 10px rgba(0,0,0,0.3);
+}
+</style>
+
+<body>
+<%- include('./partials/nav') %>
+
+<div class="overlay">
+  <div class="container mt-4">
+    <h2><%= blog.title %></h2>
+    <p>By: <%= blog.createdby?.name || "Unknown" %></p>
+    <img src="<%= blog.coverImageURL %>" style="max-width:100%; border-radius:10px; margin-bottom:15px;">
+    <p><%= blog.body %></p>
+    <% if(blog.tags && blog.tags.length > 0) { %>
+      <p>Tags: <%= blog.tags.join(", ") %></p>
+    <% } %>
+
+    <!-- Blog owner Edit/Delete buttons -->
+    <% if(user && user.id === blog.createdby._id.toString()) { %>
+      <div style="margin-top:10px;">
+        <a href="/blog/edit/<%= blog._id %>" class="btn-edit">Edit</a>
+        <form action="/blog/delete/<%= blog._id %>" method="POST" style="display:inline;">
+          <button type="submit" class="btn-delete">Delete</button>
+        </form>
+      </div>
+    <% } %>
+
+    <!-- ✅ Read More button removed from single blog view -->
+  </div>
+</div>
+
+<div class="comments-section">
+  <h5>Comments</h5>
+  <% if (comments && comments.length > 0) { %>
+    <% comments.forEach(comment => { %>
+      <p><strong><%= comment.user.name %>:</strong> <%= comment.text %></p>
+    <% }) %>
+  <% } else { %>
+    <p>No comments yet.</p>
+  <% } %>
+
+  <% if (user) { %>
+    <form action="/comments/add/<%= blog._id %>" method="POST" style="margin-top:15px;">
+      <input type="text" name="text" placeholder="Add a comment" required>
+      <button type="submit" class="btn-comment">Comment</button>
+    </form>
+  <% } else { %>
+    <p>Please <a href="/user/signin">sign in</a> to comment.</p>
+  <% } %>
+</div>
+
+<%- include('./partials/scripts') %>
+</body>

@@ -1,57 +1,101 @@
 <head>
     <%- include('./partials/head') %>
     <title>Add New Blog</title>
-
     <style>
-        /* Full screen background */
         body {
             background: url('/images/blog1.jpeg') no-repeat center center;
-            background-size: cover; /* screen cover kare */
+            background-size: cover;
             min-height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
         }
-
-        /* Dark overlay for readability */
-        .overlay {
-            background: rgba(0,0,0,0.6);
-            min-height: 100vh;
-            padding-top: 50px;
-            color: white;
+        .overlay { 
+            background: rgba(0,0,0,0.6); 
+            min-height: 100vh; 
+            padding-top:50px; 
+            color:white; 
         }
-
-        /* Form styling */
         .container {
-            max-width: 700px;
-            margin: auto;
-            background: rgba(255,255,255,0.1); /* light transparent background */
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            max-width: 700px; 
+            margin:auto;
+            background: rgba(255,255,255,0.1);
+            padding:30px; 
+            border-radius:12px; 
+            box-shadow:0 10px 25px rgba(0,0,0,0.5);
         }
+        .form-control { 
+            border-radius:8px; 
+            background:rgba(255,255,255,0.9); 
+            color:#000; 
+        }
+        label { font-weight:bold; }
+        .btn-primary { border-radius:20px; }
 
-        .form-control {
-            border-radius: 8px;
-            background: rgba(255,255,255,0.9);
-            color: #000;
-        }
+        /* styling for title */
+        #title {
+    border-radius: 12px;
+    padding: 12px 15px;
+    font-size: 16px;
+    font-weight: 600; /* 🔥 text mota */
+    border: 2px solid #ddd;
+    transition: all 0.3s ease;
+    outline: none;
+}
 
-        label {
-            font-weight: bold;
-        }
+/* Placeholder styling */
+#title::placeholder {
+    font-weight: 400;
+    color: #aaa;
+}
 
-        .btn-primary {
-            border-radius: 20px;
-        }
+/* Focus effect (jab user click kare) */
+#title:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0,123,255,0.4);
+    transform: scale(1.02);
+}
+
+/* Hover pe halka effect */
+#title:hover {
+    border-color: #999;
+}
+
+
+.blog-title {
+    font-size: 22px;
+    font-weight: 800; /* 🔥 mota text */
+    color: #fff;
+    margin-bottom: 8px;
+    line-height: 1.4;
+
+    /* Smooth styling */
+    transition: all 0.3s ease;
+
+    /* Shadow (image pe clear dikhe) */
+    text-shadow: 0 3px 10px rgba(0,0,0,0.7);
+}
+
+/* Hover effect */
+.blog-title:hover {
+    color: #00c6ff;
+    letter-spacing: 0.5px;
+    transform: translateX(4px);
+}
     </style>
 </head>
 <body>
-
 <%- include('./partials/nav') %>
 
 <div class="overlay">
     <div class="container mt-4">
         <h2>Add New Blog</h2>
+
+        <!-- Error Message -->
+        <% if (typeof error !== 'undefined' && error) { %>
+            <p style="color:red;"><%= error %></p>
+        <% } %>
+
+        <!-- Blog Form -->
         <form action="/blog/create" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="title">Title</label>

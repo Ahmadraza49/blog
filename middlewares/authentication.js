@@ -1,29 +1,45 @@
 const { validateToken } = require("../services/authentication");
+const User = require("../models/user"); // add this to fetch full user from DB
 
 function checkForAuthenticationCookie(cookieName) {
-    return (req, res, next) => {
-        const tokenCookieValue = req.cookies[cookieName];
+  return async (req, res, next) => {
+    const tokenCookieValue = req.cookies[cookieName];
 
-        // 🔹 agar cookie hi nahi hai
-        if (!tokenCookieValue) {
-            return next();   // ✅ MUST
-        }
+    if (!tokenCookieValue) {
+      req.user = null;
+      return next();
+    }
 
-        const userPayload = validateToken(tokenCookieValue);
+    try {
+      const userPayload = validateToken(tokenCookieValue);
 
-        // 🔹 agar token invalid hai
-        if (!userPayload) {
-            console.log("❌ Invalid token");
-            req.user = null;
-            return next();
-        }
-
-        // 🔹 agar sab sahi hai
-        req.user = userPayload;
+      if (!userPayload) {
+        console.log("❌ Invalid token");
+        req.user = null;
         return next();
-    };
+      }
+
+      // Fetch full user from DB to get _id
+      const user = await User.findOne({ email: userPayload.email }).lean();
+      if (!user) {
+        req.user = null;
+        return next();
+      }
+
+      // Set req.user with proper _id
+      req.user = {
+        id: user._id.toString(),
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      };
+    } catch (error) {
+      console.log("❌ Token verify error:", error.message);
+      req.user = null;
+    }
+
+    next();
+  };
 }
 
-module.exports = {
-    checkForAuthenticationCookie,
-};
+module.exports = { checkForAuthenticationCookie };

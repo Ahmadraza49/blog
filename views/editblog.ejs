@@ -12,36 +12,39 @@
 
     <h3>Edit Blog ✏️</h3>
 
-    <form action="/blog/edit/<%= blog._id %>" method="POST">
+   <form action="/blog/edit/<%= blog._id %>" method="POST" enctype="multipart/form-data">
+    <!-- Title -->
+    <div class="mb-3">
+        <label>Title</label>
+        <input type="text" name="title" value="<%= blog.title %>" class="form-control">
+    </div>
 
-        <!-- Title -->
-        <div class="mb-3">
-            <label>Title</label>
-            <input type="text" name="title" 
-                   value="<%= blog.title %>" 
-                   class="form-control">
-        </div>
+    <!-- Body -->
+    <div class="mb-3">
+        <label>Body</label>
+        <textarea name="body" class="form-control" rows="5"><%= blog.body %></textarea>
+    </div>
 
-        <!-- Body -->
-        <div class="mb-3">
-            <label>Body</label>
-            <textarea name="body" class="form-control" rows="5"><%= blog.body %></textarea>
-        </div>
+    <!-- Tags -->
+    <div class="mb-3">
+        <label>Tags (comma separated)</label>
+        <input type="text" name="tags" value="<%= blog.tags.join(',') %>" class="form-control">
+    </div>
 
-        <!-- Tags -->
-        <div class="mb-3">
-            <label>Tags (comma separated)</label>
-            <input type="text" name="tags" 
-                   value="<%= blog.tags.join(',') %>" 
-                   class="form-control">
-        </div>
+    <!-- 🔹 Cover Image (new) -->
+    <div class="mb-3">
+        <label>Cover Image</label>
+        <input type="file" name="coverImage" class="form-control">
+        <% if(blog.coverImageURL) { %>
+            <p>Current Image:</p>
+            <img src="<%= blog.coverImageURL %>" style="max-width:200px; border-radius:10px; margin-top:5px;">
+        <% } %>
+    </div>
 
-        <!-- Buttons -->
-        <button class="btn btn-success">Update Blog</button>
-        <a href="/" class="btn btn-secondary">Cancel</a>
-
-    </form>
-
+    <!-- Buttons -->
+    <button class="btn btn-success">Update Blog</button>
+    <a href="/" class="btn btn-secondary">Cancel</a>
+</form>
 </div>
 
 <%- include('./partials/scripts') %>

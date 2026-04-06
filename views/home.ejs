@@ -7,13 +7,12 @@
     <style>
         body {
            background: url('/images/blog1.jpeg') no-repeat center center/cover;
-           background-size: cover; /* screen ko cover kare */
+           background-size: cover;
            min-height: 100vh;
            margin: 0;
            font-family: Arial, sans-serif;
         }
 
-        /* overlay for dark effect */
         .overlay {
             background: rgba(0,0,0,0.6);
             min-height: 100vh;
@@ -26,6 +25,8 @@
             border-radius: 12px;
             overflow: hidden;
             transition: 0.3s;
+            background: #111;
+            color: white;
         }
 
         .card:hover {
@@ -43,8 +44,7 @@
         }
 
         .card-body {
-            background: #111;
-            color: white;
+            padding: 15px;
         }
 
         h3 {
@@ -54,11 +54,92 @@
 
         .btn {
             border-radius: 20px;
+            margin-top: 5px;
+            margin-right: 5px;
         }
 
         .container {
             max-width: 1200px;
         }
+
+
+        /* btn styling */
+        .btn.btn-light.btn-sm {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;   /* thoda compact */
+    padding: 3px 7px;    /* 🔥 size chhota */
+    font-size: 12px;      /* text chhota */
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    color: #333;
+    background: #fff;
+    border: none;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+/* Hover same rahega */
+.btn.btn-light.btn-sm:hover {
+    color: #fff;
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+}
+
+/* Animated background layer */
+.btn.btn-light.btn-sm::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, #072a50, #072a50);
+    transition: all 0.4s ease;
+    z-index: -1;
+}
+
+/* Slide animation */
+.btn.btn-light.btn-sm:hover::before {
+    left: 0;
+}
+
+/* Optional glowing effect */
+.btn.btn-light.btn-sm::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 30px;
+    box-shadow: 0 0 0 rgba(0,123,255,0);
+    transition: 0.4s;
+}
+
+.btn.btn-light.btn-sm:hover::after {
+    box-shadow: 0 0 15px rgba(0,123,255,0.6);
+}
+
+/* title style */
+/* 🔥 Blog Title Styling */
+.blog-title {
+    font-size: 20px;
+    font-weight: 800; /* mota text */
+    color: #fff;
+    margin-bottom: 8px;
+    line-height: 1.4;
+
+    /* smooth animation */
+    transition: all 0.3s ease;
+
+    /* shadow for readability */
+    text-shadow: 0 3px 10px rgba(0,0,0,0.7);
+}
+
+/* Hover effect (premium feel 😎) */
+.blog-title:hover {
+    color: #00c6ff;
+    letter-spacing: 0.5px;
+    transform: translateX(4px);
+}
     </style>
 </head>
 
@@ -69,16 +150,16 @@
 <div class="overlay">
     <div class="container mt-4">
 
-        <!-- Greeting: Only if user is logged in -->
+        <!-- Greeting -->
         <h3>
-            Blogs 
+            Blogs
             <% if (user && user.fullName) { %>
                 <%= user.fullName %> 👋
             <% } %>
         </h3>
 
         <div class="row mt-4">
-            <% if (blogs.length === 0) { %>
+            <% if (!blogs || blogs.length === 0) { %>
                 <p>No blogs found</p>
             <% } %>
 
@@ -90,28 +171,27 @@
                         <img src="<%= blog.coverImageURL %>" class="card-img-top">
 
                         <div class="card-body">
-                            <h5 class="card-title"><%= blog.title %></h5>
+                            <h5 class="card-title blog-title"><%= blog.title %></h5>
                             <p class="card-text">
-                                <%= blog.body.substring(0, 80) %>...
+                                <%= blog.body.substring(0, 100) %>...
                             </p>
 
                             <% if (blog.tags && blog.tags.length) { %>
                                 <p>
                                     <% blog.tags.forEach(tag => { %>
-                                        <span class="badge bg-gradient"><%= tag %></span>
+                                        <span class="badge bg-light text-dark"><%= tag %></span>
                                     <% }) %>
                                 </p>
                             <% } %>
 
-                            <!-- Buttons -->
-                           
+                            <!-- Read More Button -->
                             <a href="/blog/view/<%= blog._id %>" class="btn btn-light btn-sm">Read More</a>
 
-                            <!-- Edit/Delete only for owner -->
-                            <% if (user && blog.createdby == user.id) { %>
+                            <!-- Edit/Delete Buttons (only for owner) -->
+                            <% if (user && blog.createdby._id.toString() === user.id.toString()) { %>
                                 <a href="/blog/edit/<%= blog._id %>" class="btn btn-warning btn-sm">Edit</a>
                                 <form action="/blog/delete/<%= blog._id %>" method="POST" style="display:inline;">
-                                    <button class="btn btn-danger btn-sm">Delete</button>
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                 </form>
                             <% } %>
                         </div>
